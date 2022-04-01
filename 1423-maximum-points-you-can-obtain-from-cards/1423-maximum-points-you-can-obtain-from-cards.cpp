@@ -6,8 +6,8 @@ public:
         prefSum[0] = cardPoints[0];
         for(int i = 1; i < n; i++) prefSum[i] = cardPoints[i] + prefSum[i-1];
         
-        cout << "prefSum" << endl;
-        for(auto a: prefSum) cout << a << " ";
+        // cout << "prefSum" << endl;
+        // for(auto a: prefSum) cout << a << " ";
         
         if(wEnd<0) return prefSum[n-1];
         while(wEnd < n){
