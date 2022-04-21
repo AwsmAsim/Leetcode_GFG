@@ -1,22 +1,25 @@
 class MyHashSet {
 public:
+    const int SIZE = 769;
     
-    vector<int> hSet = vector<int>(1000001, 0);
+    list<int> ll[769];
     
     MyHashSet() {
         
     }
     
     void add(int key) {
-        hSet[key] = 1;
+        if(find(ll[key%SIZE].begin(),ll[key%SIZE].end(),key)==ll[key%SIZE].end())
+            ll[key%SIZE].push_back(key);
     }
     
     void remove(int key) {
-        hSet[key] = 0;
+        if(find(ll[key%SIZE].begin(),ll[key%SIZE].end(),key)!=ll[key%SIZE].end())
+            ll[key%SIZE].remove(key);
     }
     
     bool contains(int key) {
-        if(hSet[key]==1) return true;
+        if(find(ll[key%SIZE].begin(),ll[key%SIZE].end(),key)!=ll[key%SIZE].end()) return true;
         return false;
     }
 };
