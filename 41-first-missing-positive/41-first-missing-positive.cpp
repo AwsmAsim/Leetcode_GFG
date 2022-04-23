@@ -2,16 +2,25 @@ class Solution {
     
 public:
     int firstMissingPositive(vector<int>& nums) {
-        unordered_set<int> set1;
-        int pos = 1;
-        for(auto a: nums){
-            if(a==pos){
-                ++pos;
-                while(set1.find(pos)!=set1.end()) ++pos;
+        int currElement = nums[0], n = nums.size(), temp;
+        
+        for(int i = 0; i < n; i++){
+            while(nums[i]!= i+1 and (nums[i]<=n and nums[i]>0)){
+                if(nums[i] == nums[nums[i]-1]) break;
+                temp = nums[nums[i]-1];
+                nums[nums[i]-1] = nums[i];
+                nums[i] = temp;
             }
-            set1.insert(a);
         }
         
-        return pos;
+        // for(auto a: nums) cout << a << " "; 
+        for(int i = 0; i < n; i++){
+            if(nums[i] != i+1){
+                return i+1;
+            }
+        }
+        
+        
+        return n+1;
     }
 };
