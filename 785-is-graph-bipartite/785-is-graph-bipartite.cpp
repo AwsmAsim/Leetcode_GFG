@@ -1,32 +1,45 @@
 class Solution {
+    
+    void printList(vector<int> v){
+        for(auto a: v){
+            cout << a << "  ";
+        }
+        cout << endl;
+    }
+    
+    
 public:
-        bool isBipartite(vector<vector<int>>& graph) {
-        queue<pair<int, int>> q; //<node, color>
-        int n=graph.size();
-        vector<int> colors(n, 0);
-		//colors: 1, -1, 0(Not colored)
-        vector<bool> isVisited(n, false);
-        for(int i=0; i<n; i++){
-            if(colors[i]) /*means the current node and all the connected nodes 
-			to this are bipartite and we dont need to check them. */
-                continue;
-            q.push({i, 1}); //start BFS from the current node if not colored yet.
-            while(!q.empty()){
-                auto [node, color] = q.front();
-                q.pop();
-                if(isVisited[node])
-                    continue;
-                isVisited[node]=true;
-                for(auto child: graph[node]){
-                    if(isVisited[child] && colors[child]==color)
-                        return false;
-                    else if(!isVisited[child]){
-                        colors[child]=color*(-1);
-                        q.push({child, colors[child]});
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        queue<int> q;
+        vector<int> colors(graph.size(), -1);
+        vector<int> visited(graph.size(), -1);
+        
+        for(int i = 0; i < graph.size(); i++){
+            if(colors[i] == -1){
+                q.push(i);
+                colors[i] = 1;
+                int parentColor = 1;
+                while(!q.empty()){
+                    int top = q.front();
+                    q.pop();
+                    for(auto node: graph[top]){
+                        if(colors[node]==-1){
+                            // cout << node << " ." << top << endl;
+                            // printList(colors);
+                            q.push(node);
+                            colors[node] = 1 - colors[top];
+                        }else{
+                            // cout << node << " " << top << endl;
+                            // printList(colors);
+                            if(colors[node] == colors[top]) return false;
+                            
+                        }
                     }
-                }   
+                }
             }
         }
+        
         return true;
     }
 };
