@@ -11,28 +11,43 @@
  */
 class Solution {
     
-    int getH(TreeNode* root){
-        if(root == NULL) return 0;
-        return 1 + max(getH(root->left), getH(root->right));
-    }
+//     int getH(TreeNode* root){
+//         if(root == NULL) return 0;
+//         return 1 + max(getH(root->left), getH(root->right));
+//     }
     
-    bool naive(TreeNode* root){
-        if(root==NULL) return true;
+//     bool naive(TreeNode* root){
+//         if(root==NULL) return true;
         
-        int lh = getH(root->left), rh = getH(root->right);
+//         int lh = getH(root->left), rh = getH(root->right);
         
-        if(abs(lh - rh)>1) return false;
+//         if(abs(lh - rh)>1) return false;
         
-        int checkL = naive(root->left), checkR = naive(root->right);
+//         int checkL = naive(root->left), checkR = naive(root->right);
         
-        if(!checkL || !checkR) return false;
+//         if(!checkL || checkR) return false;
         
-        return true;
+//         return true;
+//     }
+    
+    int check(TreeNode* root){
+        if(root == NULL) return 0;
+        
+        int lh = check(root->left);
+        if(lh == -1) return -1;
+        int rh = check(root->right);
+        if(rh == -1) return -1;
+        
+        if(abs(lh - rh) > 1) return -1;
+        
+        return 1+max(lh, rh);
     }
     
 public:
     bool isBalanced(TreeNode* root) {
-        return naive(root);
+        int ch = check(root);
+        if(ch == -1) return false;
+        return true;
     
     }
 };
