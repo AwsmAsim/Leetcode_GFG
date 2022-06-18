@@ -1,33 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
-public:
-
-    int status(TreeNode* root,int &n){
- 
-        if(root == NULL){
-            return 1;
+    int camera = 0;
+    int hasNoCamera = -1, hasCamera = 0, noCameraRequired = 1;
+    
+    int placeCamera(TreeNode* root, bool child){
+        
+        if(root == NULL) return noCameraRequired;
+        
+        int left = placeCamera(root->left, true);
+        int right = placeCamera(root->right, true);
+        if(left == hasNoCamera or right == hasNoCamera){
+            ++camera;
+            return hasCamera;
+        }else if(left == hasCamera or right == hasCamera){
+            return noCameraRequired;
+        }else{
+            if(child){
+                return hasNoCamera;
+            }else{
+                ++camera;
+                return hasCamera;
+            }
         }
-        
-        int l = status (root->left,n);
-        int r = status (root->right,n);
-        
-
-        if(l==0 || r==0){
-            n++;
-            return 2;
-        }
-        
-        if(l==2 || r==2){
-            return 1;
-        }
-        
         return 0;
     }
+    
+public:
     int minCameraCover(TreeNode* root) {
-        int n=0;
-        
-        if(status(root,n) == 0){
-            n++;
-        }
-        return n;
+        if(root->left == NULL and root->right == NULL) return 1;
+        placeCamera(root, false);
+        return camera;
     }
 };
