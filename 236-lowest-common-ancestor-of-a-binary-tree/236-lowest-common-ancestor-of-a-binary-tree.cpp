@@ -22,6 +22,7 @@ public:
         
     }
     
+    // Space complexity: O(N^2)
     TreeNode* inorder(TreeNode* root, TreeNode* p, TreeNode* q){
         if(root!= NULL){
             TreeNode* lAnswer = inorder(root->left, p, q);
@@ -42,6 +43,21 @@ public:
         
         return nullptr;
     }
+    
+    TreeNode* singleTraversalSolve(TreeNode* root, TreeNode* p, TreeNode* q){
+        if(root == NULL) return nullptr;
+        if(root == p || root == q) return root;
+        
+        TreeNode* lh = singleTraversalSolve(root->left, p, q);
+        TreeNode* rh = singleTraversalSolve(root->right, p, q);
+        
+        if(lh == NULL) return rh;
+        if(rh == NULL) return lh;
+        
+        return root;
+        
+    }
+    
     
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         return inorder(root, p, q);
