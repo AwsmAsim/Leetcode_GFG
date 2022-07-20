@@ -11,6 +11,20 @@
  */
 class Solution {
     
+    int maxH = -1;
+    
+    int getMaxDiameterOn(TreeNode* root){
+        if(root == nullptr) return 0;
+        
+        int lh = getMaxDiameterOn(root->right);
+        int rh = getMaxDiameterOn(root->left);
+        
+        maxH = max(lh + rh, maxH);
+        
+        return 1 + max(lh, rh);
+    }
+    
+    
     int height(TreeNode* root){
         if(root == NULL) return 0;
         
@@ -32,6 +46,7 @@ class Solution {
         
     }
     
+    
     int getDiameter(TreeNode* root, int& maxi){
         if(root == NULL) return 0;
         
@@ -45,6 +60,8 @@ class Solution {
 public:
     int diameterOfBinaryTree(TreeNode* root) {
         
+        getMaxDiameterOn(root);
+        return maxH;
         return findDiameter(root);
         
         int maxi = INT_MIN;
