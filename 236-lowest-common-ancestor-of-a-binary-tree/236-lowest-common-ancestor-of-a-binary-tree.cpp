@@ -58,8 +58,40 @@ public:
         
     }
     
+    int checkAv(TreeNode* root, TreeNode* p, TreeNode* q){
+        
+        if(root == NULL) return 0;
+        if(root == p or root == q) return 1;
+        
+        if(checkAv(root->right, p, q)) return true;
+        else if(checkAv(root->left, p, q)) return true;
+        
+        return false;
+        
+    }
+    
+    TreeNode* dailyChallenge(TreeNode* node, TreeNode* p, TreeNode* q){
+        if(node == NULL) return NULL;
+        
+        TreeNode* t = dailyChallenge(node->left, p, q);
+        if(t != NULL) return t;
+        
+        int nodesFound = checkAv(node->right, p, q) + checkAv(node->left, p, q);
+        if(node == p or node == q){
+            if(nodesFound == 1) return node;
+        }else{
+            if(nodesFound == 2) return node;
+        }
+        
+        t = dailyChallenge(node->right, p, q);
+        if(t != NULL) return t;
+            
+        return NULL;
+    }
+    
     
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        return dailyChallenge(root, p, q);
         return singleTraversalSolve(root, p, q);
         return inorder(root, p, q);
     }
