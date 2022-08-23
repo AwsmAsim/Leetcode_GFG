@@ -10,62 +10,58 @@
  */
 class Solution {
     
-    ListNode* reverseList(ListNode* n1){
+    ListNode* reverse(ListNode* head){
+        ListNode *dummy = NULL, *next = NULL;
         
-        ListNode* d = NULL;
-        
-        while(n1){
-            ListNode* next = n1->next;
-            n1->next = d;
-            d = n1;
-            n1 = next;
+        while(head){
+            next = head-> next;
+            head -> next = dummy;
+            dummy = head;
+            head = next;
         }
         
-        return d;
+        // cout << "Reversed List: " << endl;
+        // cout << dummy-> val << " ";
+        // if(dummy->next)cout << dummy -> next -> val << endl;
+        
+        return dummy;
     }
     
-    bool solve(ListNode* head){
+    bool solveDailyChallenge(ListNode* head){
         ListNode *slow = head, *fast = head;
         
-        while(fast!= NULL and fast->next != NULL and fast->next->next != NULL){
+        if(fast->next == NULL) return true;
+        
+        while(fast->next != NULL and fast -> next -> next != NULL){
             slow = slow -> next;
-            fast = fast->next->next;
+            fast = fast -> next -> next;
         }
         
-        // cout << "slow fast loop" << endl;
+        // cout << "Center at: " << slow->val << endl;
         
-        // slow Node is the centre node.
-        slow -> next = reverseList(slow->next);
-        
-        // int n = slow -> next -> val;
-        // cout << "valie at slow: " << n << endl;
-        
-        // PRINT NODE
+        slow ->next = reverse(slow->next);
+        cout << "Print Linked List\n";
         // ListNode* t = head;
-        // while(t != nullptr){
-        //     int n = t -> val;
-        //     cout << (n) << endl;
+        // while(t){
+        //     cout << t->val << ", ";
         //     t = t->next;
-        //     cout << t << endl;
         // }
+        // cout << endl;
         
-        if(fast != NULL) slow = slow -> next;
-        
-        fast = head;
+        slow = slow->next;
+        ListNode* cmp = head;
         
         while(slow!=NULL){
-            if((fast->val) != (slow->val)) return false;
+            if(slow->val != cmp->val) return false;
             slow = slow->next;
-            fast = fast -> next;
+            cmp = cmp->next;
         }
         
         return true;
-        
     }
     
 public:
     bool isPalindrome(ListNode* head) {
-        
-        return solve(head);
+        return solveDailyChallenge(head);
     }
 };
