@@ -1,29 +1,32 @@
 class Solution {
     
-    void dfs(int i, int j, vector<vector<int>>& visited, vector<vector<char>>& grid){
-        int m = grid.size(), n = grid[0].size();
-        if(i < 0 || j < 0) return;
-        if(i >= m || j >= n) return;
-        if(grid[i][j] == '0') return;
-        if(visited[i][j] == 1) return;
-        visited[i][j] = 1;
+    void dfs(int i, int j){
+        if(i < 0 or j < 0 or i >= n or j >= m) return;
+        if(Grid[i][j] == '0') return;
+        Grid[i][j] = '0';
         
-        dfs(i+1, j, visited, grid);
-        dfs(i-1, j, visited, grid);
-        dfs(i, j+1, visited, grid);
-        dfs(i, j-1, visited, grid);
+        vector<vector<int> > directions = {
+            {0, -1}, {0, 1}, {-1, 0}, {1, 0}  
+        };  
+        
+        for(vector<int> direction: directions){
+            dfs(i + direction[0], j + direction[1]);
+        }
     }
     
 public:
+    int n, m;
+    vector<vector<char>> Grid;
     int numIslands(vector<vector<char>>& grid) {
-        
-        vector<vector<int>> visited(grid.size(), vector<int>(grid[0].size(), 0));
+        this-> n = grid.size();
+        this-> m = grid[0].size();
+        Grid = grid;
         int count = 0;
         
-        for(int i = 0; i < grid.size(); i++){
-            for(int j = 0; j < grid[0].size(); j++){
-                if(!visited[i][j] and grid[i][j]!='0'){
-                    dfs(i, j, visited, grid);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(Grid[i][j] == '1'){
+                    dfs(i,j);    
                     ++count;
                 }
             }
