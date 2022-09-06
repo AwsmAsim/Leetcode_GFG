@@ -1,5 +1,10 @@
 class Solution {
     
+    void _print(vector<int> nums){
+        for(int num: nums) cout << num << ",";
+        cout << endl;
+    }
+    
     int recursive(vector<int>& nums, int idx)
     {
         if(idx >= nums.size()) return 0;
@@ -46,9 +51,22 @@ class Solution {
         return dp[nums.size()-1];
     }
     
+    int solve(vector<int>& arr){
+
+        if(arr.size() == 1) return arr[0];
+        if(arr.size() == 2) return max(arr[0], arr[1]);
+
+        arr[1] = max(arr[0], arr[1]);
+        for(int i = 2; i < arr.size(); i++){
+            arr[i] = max(arr[i-1], arr[i] + arr[i-2]);
+        }
+        return arr[arr.size()-1];
+    }
+    
 public:
     int rob(vector<int>& nums) {
         // return recursive(nums, 0);
+        return solve(nums);
         return tab1(nums);
         return tabulation(nums);
     }
