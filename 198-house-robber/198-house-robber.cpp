@@ -63,9 +63,25 @@ class Solution {
         return arr[arr.size()-1];
     }
     
+    int solveIncExc(vector<int>& arr){
+
+        if(arr.size() == 1) return arr[0];
+        if(arr.size() == 2) return max(arr[0], arr[1]);
+
+        int include = arr[0], exclude = 0;
+        int prevExclude = 0;
+        for(int i = 1; i < arr.size(); i++){
+            prevExclude = exclude;
+            exclude = max(include, prevExclude);
+            include = prevExclude + arr[i];
+        }
+        return max(include, exclude);
+    }
+    
 public:
     int rob(vector<int>& nums) {
         // return recursive(nums, 0);
+        return solveIncExc(nums);
         return solve(nums);
         return tab1(nums);
         return tabulation(nums);
