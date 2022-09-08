@@ -28,12 +28,27 @@ class Solution {
         return hMap[root] = max(notPick, pick);
     }
     
-    
-    // int solveIncExc(TreeNode* )
+    int include = 0, exclude = 1;
+    // [include, exclude]
+    vector<int> solveIncExc(TreeNode* root){
+        // return max([left.exlucde + right.exclude + curret, left+right])
+        
+        if(root == nullptr) return vector<int>(2,0);
+        
+        // cout << root -> val << endl;
+        vector<int> left = solveIncExc(root->left);
+        vector<int> right = solveIncExc(root->right);
+        int notPick = max(left[0], left[1]) + max(right[0], right[1]);
+        
+        return {left[exclude] + right[exclude] + root->val, notPick};
+        
+    }
     
 public:
     int rob(TreeNode* root) {
         if(root->left == NULL and root->right == NULL) return root->val;
+        vector<int> ans = solveIncExc(root);
+        return max(ans[0], ans[1]);
         return solve(root);
     }
 };
