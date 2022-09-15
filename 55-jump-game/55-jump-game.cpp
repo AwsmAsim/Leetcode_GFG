@@ -1,18 +1,28 @@
 class Solution {
     
+    void _print(vector<int> arr){
+        for(int num: arr) cout << num << ", ";
+        cout << endl;
+    }
     
 public:
     bool canJump(vector<int>& nums) {
-        int i = nums.size()-2, last;
-        last = nums.size()-1;
+        
+        vector<int> dp(nums.size(), 0);
+        dp[nums.size()-1] = 1;
+        int i = nums.size()-1;
         
         for(; i >= 0; i--){
-            if(i+nums[i] >= last){
-                last = i;
+            for(int j = i + 1 ; j <= min((int)i + nums[i], (int) nums.size()-1); j++){
+                if(dp[j] == 1){
+                    dp[i] = 1;
+                    break;
+                }
             }
         }
-        if(last <= 0) return true;
-        return false;
         
+        // _print(dp);
+        
+        return dp[0];
     }
 };
