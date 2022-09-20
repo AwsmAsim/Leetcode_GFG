@@ -26,12 +26,10 @@ class Solution {
             int top = Q.front();
             Q.pop();
             
-            if(arr[top] < 0) continue;
+            if(top < 0 or top > arr.size()-1 or arr[top] < 0) continue;
             if(arr[top] == 0) return true;
             
-            if(arr[top]+top < arr.size())
             Q.push(arr[top] + top);
-            if(top - arr[top] >= 0)
             Q.push(top - arr[top] );
             
             arr[top] *= -1;
