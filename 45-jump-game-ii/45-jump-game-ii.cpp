@@ -1,24 +1,23 @@
 class Solution {
+
+    
 public:
     int jump(vector<int>& nums) {
-        if(nums.size()==1) return 0;
-        int count = 0;
-        for(int i = 0; i < nums.size(); i++){
-            // cout << i << ": " << nums[i] << endl;
-            if(i + nums[i] >= nums.size()-1) return ++count;
-            int maxElement = INT_MIN, newIdx = i;
-            for(int j = 1; j <= nums[i]; j++){
-                // cout << nums[i+j] << " " << maxElement << " j: " << j << endl;
-                if(nums[i+j]+j >= maxElement){
-                    maxElement = nums[i+j] + j;
-                    newIdx=i+j;
-                } 
+        
+        vector<int> dp(nums.size(), INT_MAX);
+        
+        
+        dp[nums.size()-1] = 0;
+        for(int i = nums.size()-2; i >= 0; i--){
+            int minMoves = INT_MAX;
+            for(int j = 1 + i; j <= min(i+nums[i], (int)nums.size()-1); j++){
+                minMoves = min(minMoves, dp[j]);
             }
-            i = newIdx;
-            // cout<< "updated i:" << i <<endl;
-            --i;
-            ++count;
+            if(minMoves == INT_MAX) continue;
+            dp[i] = 1 + minMoves;
         }
-        return 0;
+        
+        return dp[0];
+        
     }
 };
