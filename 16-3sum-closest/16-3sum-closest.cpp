@@ -1,26 +1,30 @@
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
+        
         sort(nums.begin(), nums.end());
-        int sum1 = INT_MAX, left, right;
-        int closestSum = INT_MAX;
+        int ans = INT_MAX, minDiff = INT_MAX;
+        
+        int startPtr = 0, endPtr = nums.size()-1, start, end = nums.size()-1;
+        
         for(int i = 0; i < nums.size()-2; i++){
-            left = i+1;
-            right = nums.size()-1;
-            while(left < right){
-                sum1 = nums[i] + nums[left] + nums[right];
-                // cout << nums[i] << " " << " " << nums[left] << " " << nums[right] << endl;
-                // cout << sum1 << endl;
-                if(abs(target-sum1) < abs(closestSum)){
-                    closestSum = target-sum1;
+            start = i+1, end = nums.size()-1;
+            while(start < end){
+                int newSum = nums[i] + nums[start] + nums[end];
+                if(abs(target - newSum) < minDiff){
+                    minDiff = abs(target - newSum);
+                    ans = newSum;
                 }
-                // cout << "closest sum: " << closestSum << endl;
-                if(sum1>target) --right;
-                else if(nums[left] + nums[right] + nums[i]==target) return target;
-                else ++left;
+                
+                if(ans == target) return target;
+                else if(newSum < ans) ++start;
+                else --end;
             }
+            
         }
         
-        return target - closestSum;
+        
+        return ans;
+        
     }
 };
