@@ -1,84 +1,76 @@
 class Solution {
-    
-    
 public:
     
-    unordered_map<int, int> parent;
-    unordered_map<int, int> rankk;
-    int islands = 0;
     
-    int find(int i){
+    unordered_set<int> nodes;
+    unordered_map<int, int> rankk;
+    unordered_map<int, int> parentt;
+    
+    int findSet(int i){
         
-        if(!parent.count(i)){
-            parent[i] = i;
-            rankk[i] = 1;
-            return i;
-        }
         
-        if(parent[i] == i) return i;
-        else return parent[i] = find(parent[i]);
+        // cout << i << endl;
+        
+        if(parentt[i] == i) return i;
+        else return parentt[i] = findSet(parentt[i]);
         
     }
+    
+//     int findSetY(int i, int x){
+        
+//         if(parentt[i] == x) return x;
+//         else return parentt[i] = findSet(i);
+//     }
     
     void unionn(int i, int j){
+        int x = findSet(i), y = findSet(j);
         
-        int x = find(i);
-        int y = find(j);
-        if(x==y) return;
+        // cout << "findSet(i): " << x << " findSet(j): " << y << endl;
         
-        if(x < 0){
-            parent[x] = y;
-        }else if(y < 0){
-            parent[y] = x;
+        if(i == j) return;
+        if(rankk[x] > rankk[y]){
+            parentt[y] = x;
+            rankk[x]++;
+        }else if(rankk[x] > rankk[y]){
+            parentt[x] = y;
+            rankk[y]++;
         }else{
-            if(rankk[x] > rankk[y]){
-                parent[y] = x;
-                return;
-            }else if(rankk[x] < rankk[y]){
-                parent[x] = y;
-                return;
-            }else{
-                parent[x] = y;
-                ++rankk[y];
-                return;
-            }
+            parentt[y] = x;
+            rankk[x]++;
         }
         
-        
     }
-    
+        
     
     int removeStones(vector<vector<int>>& stones) {
         
-        for(auto stone: stones){
-            unionn(stone[0], ~stone[1]);
+        for(vector<int> stone: stones){
+            int x = stone[0], y = -(stone[1] + 1);
+            // cout << x << ", " << y << endl;            
+            
+            if(parentt.find(x) == parentt.end()){
+                parentt[x] = x;
+                rankk[x] = 0;
+                ++rankk[x];
+            }
+            if(parentt.find(y) == parentt.end()){
+                parentt[y] = x;
+                // rankk[x] = 0;
+                ++rankk[x];
+            }
+            
+            unionn(x, y);
         }
         
         unordered_set<int> set1;
         
-        for(pair<int ,int> p: parent){
-            set1.insert(find(p.first));
+        for(pair<int, int> p: parentt){
+            // cout << p.first << " : " << p.second << endl;
+            set1.insert(findSet(p.first));
         }
         
-        // for(int pp: set1) {
-        //     cout << pp << ", ";
-        // }
-        // cout << endl;
+        return (stones.size() - set1.size());
         
-        return stones.size() - set1.size();
         
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
